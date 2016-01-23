@@ -1,0 +1,22 @@
+<html>
+{% block content %}
+
+    <div class="main">
+
+        <form action='/proceed/' method='POST'>
+            {% csrf_token %}
+
+            <ul>
+            {% for shoe in obj_list %}
+                <div class="title">
+                    {{ shoe.id }}&nbsp;|&nbsp;{{ shoe.name }}&nbsp;|&nbsp;{{ shoe.brand }}&nbsp;|&nbsp;{{ shoe.gender }}&nbsp;|&nbsp;<img src="{{ shoe.featured_image.url }}" />&nbsp;|&nbsp;{{shoe.price}}
+                </div>
+            {% endfor %}
+            <h3 align="center">Total Amount to Pay is {{sum_}}</h3>
+        </ul>
+
+            <input type='submit' value='Buy'>
+
+        </form>
+{% endblock %} 
+</html>

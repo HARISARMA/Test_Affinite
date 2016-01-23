@@ -1,0 +1,57 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+    <div class="main">
+
+        <form action='/filter/' method='POST'>
+            {% csrf_token %}
+            <select name='gender'>
+                <option selected="selected"></option>
+                <option> MALE </option>
+                <option> FEMALE </option>
+            </select> &nbsp;&nbsp;&nbsp;&nbsp;
+            <select name="brand">
+                <option selected="selected"></option>
+                {% for brand in brands %}
+                    <option>{{brand}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="search">
+
+        </form>
+
+        <form action="/buy/" method='POST' name='myform'>
+        {% csrf_token %}
+        <ul>
+            {% for shoe in shoes.object_list %}
+                <div class="title">
+                    <input type="radio" name='{{shoe.name}}'>&nbsp;&nbsp;{{ shoe.id }}&nbsp;|&nbsp;{{ shoe.name }}&nbsp;|&nbsp;{{ shoe.brand }}&nbsp;|&nbsp;{{ shoe.gender }}&nbsp;|&nbsp;<img src={{shoe.featured_image.url}} />&nbsp;|&nbsp;{{shoe.price}}
+                </div>
+            {% endfor %}
+        </ul>
+        <input type='submit' value='Buy'>
+
+        <!-- Next/Prev page links  -->
+        {% if shoes.object_list and shoes.paginator.num_pages > 1 %}
+        <div class="pagination" style="margin-top: 20px; margin-left: -20px; ">
+            <span class="step-links">
+                {% if shoes.has_previous %}
+                    <a href= "?page={{ shoes.previous_page_number }}">newer entries &lt;&lt; </a>
+                {% endif %}
+
+                <span class="current">
+                    &nbsp;Page {{ shoes.number }} of {{ shoes.paginator.num_pages }}
+                </span>
+
+                {% if shoes.has_next %}
+                    <a href="?page={{ shoes.next_page_number }}"> &gt;&gt; older entries</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        </form>
+
+    </div>
+
+{% endblock %}
